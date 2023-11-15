@@ -12,6 +12,7 @@
 3. [服务集群](./03_cluster_chat/README.md) 多组后端服务器
 4. [采用protobuf序列化消息](./04_protobuf/README.md)
 5. [采用msgpack序列化消息](./05_msgp/README.md)
+6. [tadpole服务端](./06_tadpole_server/README.md) 分别通过 [nano](https://github.com/lonng/nano) 和 [pitaya](https://github.com/topfreegames/pitaya) 实现
 
 ## 引用
 
