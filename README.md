@@ -23,6 +23,24 @@ git submodule add https://github.com/topfreegames/pitaya-protos.git pitaya-proto
 
 ## Tips
 
+- pull with submodules
+
+```bash
+# clone with submodules
+git clone https://github.com/ryanpenn/learn-pitaya-with-demos.git --recursive
+
+# (or) clone and update for the first time
+git clone https://github.com/ryanpenn/learn-pitaya-with-demos.git
+git submodule update --init --recursive
+
+# update submodules (git version > 1.8.2)
+git pull --recurse-submodules
+
+# update submodules (git version > 1.7.3)
+git submodule update --recursive --remote
+
+```
+
 - go module `SECURITY ERROR`
 
 ```bash
