@@ -1,7 +1,0 @@
-[submodule "pitaya-protos"]
-	path = pitaya-protos
-	url = https://github.com/topfreegames/pitaya-protos
-
-[submodule "pitaya-cli"]
-	path = pitaya-cli
-	url = https://github.com/topfreegames/pitaya-cli
