@@ -7,12 +7,16 @@
 - websocket
 - docker
 
-## Run
-```
-docker-compose -f ../docker-compose.yml up -d etcd nats
-go run main.go
+## test environment
 
+```bash
+docker-compose -f ../docker-compose.yml up -d etcd nats
 docker-compose -f ../docker-compose.yml down
 ```
 
-open browser => http://localhost:3251/
+## Run
+```
+go run main.go
+
+# open browser => http://localhost:3251/
+```
