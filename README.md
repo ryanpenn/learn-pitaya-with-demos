@@ -8,8 +8,10 @@
 ## 示例
 
 1. [聊天](./01_chat/README.md)
-2. [简单集群](./02_cluster/README.md) 区分前后端服务器
-3. [服务集群](./03_cluster_chat/README.md)
+2. [简单集群](./02_cluster/README.md) 区分前、后端服务器
+3. [服务集群](./03_cluster_chat/README.md) 多组后端服务器
+4. [采用protobuf序列化消息](./04_protobuf/README.md)
+5. [采用msgpack序列化消息](./05_msgp/README.md)
 
 ## 引用
 
