@@ -46,6 +46,7 @@ func main() {
 	}
 
 	// 启动worker
+	// 通过redis实现可靠RPC(ReliableRPC),发生任何错误，pitaya会进行重试
 	conf := viper.New()
 	conf.SetDefault("pitaya.worker.redis.url", "localhost:6379")
 	conf.SetDefault("pitaya.worker.redis.pool", "3")

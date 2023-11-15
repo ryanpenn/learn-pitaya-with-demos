@@ -49,6 +49,9 @@ func (room *Room) Join(ctx context.Context, req []byte) (*pb.Response, error) {
 	// 为了方便，请求和返还，都用response...
 	replay := pb.Response{}
 	room.app.ReliableRPC("log.log.recordlog", nil, &replay, &pb.Response{Msg: "uid:" + uid + ",join room"})
+	// 重要‼️
+	// 被ReliableRPC调用的接口必须是幂等的
+	// ReliableRPC没有返回值，只有在成功时会返回作业ID（jid）
 
 	return &pb.Response{
 		Code: 0,
