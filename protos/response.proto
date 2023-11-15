@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package protos;
+option csharp_namespace = "NPitaya.Protos";
+option go_package = "github.com/topfreegames/pitaya/pkg/protos";
+
+import "error.proto";
+
+message Response {
+  bytes data = 1;
+  Error error = 2;
+}

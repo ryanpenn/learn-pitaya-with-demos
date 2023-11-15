@@ -1,0 +1,8 @@
+syntax = "proto3";
+option go_package = "github.com/topfreegames/pitaya/pkg/protos/test";
+
+package test;
+
+message TestRequest {
+  string msg = 1;
+}

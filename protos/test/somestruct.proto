@@ -1,0 +1,9 @@
+syntax = "proto3";
+option go_package = "github.com/topfreegames/pitaya/pkg/protos/test";
+
+package test;
+
+message SomeStruct{
+  int32 A = 1;
+  string B = 2;
+}
