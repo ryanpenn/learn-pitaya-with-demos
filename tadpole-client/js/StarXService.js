@@ -3,7 +3,7 @@ var StarXService = function (model) {
     this.hasConnection = false;
 
     this.sendUpdate = function (data) {
-        starx.notify("game.world.update", {
+        starx.notify("World.Update", {
             id: data.id,
             x: data.x,
             y: data.y,
@@ -14,7 +14,7 @@ var StarXService = function (model) {
     };
 
     this.sendMessage = function(msg){
-        starx.notify("game.world.message", {
+        starx.notify("World.Message", {
             message: msg
         });
     };
@@ -30,7 +30,7 @@ var StarXService = function (model) {
     };
 
     var joyLogin = function () {
-        starx.request("game.world.enter", {}, welcomeHandler)
+        starx.request("World.Enter", {}, welcomeHandler)
     };
 
     var updateHandler = function (data) {
@@ -87,7 +87,7 @@ var StarXService = function (model) {
     };
 
     var wsInit = function () {
-        starx.request("game.manager.login", {username: "123123123", cipher: "12312312312"}, joyLogin);
+        starx.request("Manager.Login", {username: "123123123", cipher: "12312312312"}, joyLogin);
         starx.on("close", closeHandler);
         starx.on("update", updateHandler);
         starx.on("leave", leaveHandler);

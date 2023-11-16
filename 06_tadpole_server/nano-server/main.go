@@ -1,14 +1,13 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
-
 	"github.com/lonng/nano"
 	"github.com/lonng/nano/component"
 	"github.com/lonng/nano/serialize/json"
 	"github.com/urfave/cli"
+	"log"
+	"net/http"
+	"os"
 
 	"tadpole/logic"
 )
@@ -44,6 +43,7 @@ func serve(ctx *cli.Context) error {
 	// register all service
 	options := []nano.Option{
 		nano.WithIsWebsocket(true),
+		nano.WithLabel("game"),
 		nano.WithComponents(components),
 		nano.WithSerializer(json.NewSerializer()),
 		nano.WithCheckOriginFunc(func(_ *http.Request) bool { return true }),
