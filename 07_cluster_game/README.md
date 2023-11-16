@@ -11,7 +11,6 @@ cluster_game
 ├─game                  游戏服务器
 ├─gate                  网关服务器
 ├─login                 登录服务器
-├─modules               公共模块
 ├─pkg                   公共包
 ├─protos                通信协议
 ├─settings              配置表
