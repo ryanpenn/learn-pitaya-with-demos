@@ -1,7 +1,11 @@
 package login
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/topfreegames/pitaya/v2"
+	"github.com/topfreegames/pitaya/v2/component"
 
 	"learn-pitaya-with-demos/cluster_game/login/internal"
 	"learn-pitaya-with-demos/cluster_game/pkg/config"
@@ -25,20 +29,14 @@ func Register(app pitaya.Pitaya, c *config.LoginConfig) {
 
 	// 注册Web模块
 	m := internal.NewWebModule(app, c)
-	app.RegisterModule(m, "web")
+	err := app.RegisterModule(m, "web")
+	if err != nil {
+		panic(fmt.Errorf("web module register err: %v", err))
+	}
 
 	// 注册 handler
-	//app.Register(handlers.NewHandler(&handlers.HConfig{
-	//	App:            app,
-	//	WebConfig:      c,
-	//	AccountService: m.accService,
-	//	TokenService:   m.tokenService,
-	//}), component.WithName("handler"), component.WithNameFunc(strings.ToLower))
+	app.Register(internal.NewHandler(app, c), component.WithName("handler"), component.WithNameFunc(strings.ToLower))
 
 	// 注册 remote
-	//app.RegisterRemote(handlers.NewRemote(&handlers.RConfig{
-	//	App:               app,
-	//	GamePlayerService: m.playerService,
-	//}), component.WithName("remote"), component.WithNameFunc(strings.ToLower))
-
+	app.RegisterRemote(internal.NewRemote(app, c), component.WithName("remote"), component.WithNameFunc(strings.ToLower))
 }

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package protos;
+option go_package = "./protos";
+
+// RPC Msg for Request/Response
+message RPCMsg {
+  int64 code = 1;
+  string Content = 2;
+}
+
+// RPC Empty Msg
+message RPCEmpty {
+}

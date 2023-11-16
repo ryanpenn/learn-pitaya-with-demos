@@ -14,6 +14,13 @@ type Handler struct {
 	cfg *config.LoginConfig
 }
 
+func NewHandler(app pitaya.Pitaya, c *config.LoginConfig) *Handler {
+	return &Handler{
+		app: app,
+		cfg: c,
+	}
+}
+
 // Auth 校验Token
 func (h *Handler) Auth(ctx context.Context, req *msg.ReqAuth) (*msg.Empty, error) {
 

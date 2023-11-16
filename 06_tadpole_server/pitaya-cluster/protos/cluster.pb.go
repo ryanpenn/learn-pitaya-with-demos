@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.26.0
 // 	protoc        v3.12.3
-// source: examples/demo/protos/cluster.proto
+// source: examples/demo/protos/rpc.proto
 
 package protos
 

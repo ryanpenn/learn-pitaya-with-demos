@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/topfreegames/pitaya/v2"
 	"github.com/topfreegames/pitaya/v2/component"
+	"learn-pitaya-with-demos/cluster_game/pkg/config"
 
 	"learn-pitaya-with-demos/cluster_game/protos"
 )
@@ -12,16 +13,24 @@ import (
 type Remote struct {
 	component.Base
 	app pitaya.Pitaya
+	cfg *config.LoginConfig
+}
+
+func NewRemote(app pitaya.Pitaya, c *config.LoginConfig) *Remote {
+	return &Remote{
+		app: app,
+		cfg: c,
+	}
 }
 
 // 获取角色信息
-func (r *Remote) PlayerInfo(ctx context.Context, arg *protos.Arg) (*protos.Response, error) {
+func (r *Remote) PlayerInfo(ctx context.Context, arg *protos.RPCMsg) (*protos.RPCMsg, error) {
 
-	return &protos.Response{Code: 200, Msg: "ok"}, nil
+	return &protos.RPCMsg{Code: 200, Content: "ok"}, nil
 }
 
 // 更新角色信息
-func (r *Remote) PlayerInfoUpdate(ctx context.Context, arg *protos.Arg) (*protos.Response, error) {
+func (r *Remote) PlayerInfoUpdate(ctx context.Context, arg *protos.RPCMsg) (*protos.RPCEmpty, error) {
 
 	return nil, nil
 }
