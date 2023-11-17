@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"learn-pitaya-with-demos/cluster_game/cmd/servers"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -28,6 +29,12 @@ var startCmd = &cobra.Command{
 		//internal.InitConfig()
 		//internal.InitLogger()
 	},
+}
+
+func init() {
+	rootCmd.AddCommand(startCmd)
+	// start
+	startCmd.AddCommand(servers.LoginServer) // start login
 }
 
 func Execute() {

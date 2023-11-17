@@ -14,3 +14,16 @@ protos:
 	@echo "step2: gen *.pb.go files"
 	@protoc --go_out=. -I=./assets/protos  ./assets/protos/*.proto
 	@echo "step2: done!"
+
+# 启动容器
+docker-up:
+	docker-compose -f ../docker-compose.yml up -d nats etcd
+
+# 停止容器
+docker-down:
+	docker-compose -f ../docker-compose.yml down
+
+.PHONY: login
+# login-server
+login:
+	go run . start login

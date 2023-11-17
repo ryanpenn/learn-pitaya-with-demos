@@ -1,0 +1,7 @@
+serverConfig:
+  serverType: "login"
+  isFrontend: false
+httpPort: 9000
+mode: "debug"
+httpTimeout: 1800
+contextPath: "api"

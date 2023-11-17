@@ -1,6 +1,6 @@
 package config
 
 type ServerConfig struct {
-	ServerType string
-	IsFrontend bool
+	ServerType string `yaml:"server-type"`
+	IsFrontend bool   `yaml:"is-frontend"`
 }
