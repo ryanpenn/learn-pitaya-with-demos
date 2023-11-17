@@ -17,7 +17,7 @@ protos:
 
 # 启动容器
 docker-up:
-	docker-compose -f ../docker-compose.yml up -d nats etcd
+	docker-compose -f ../docker-compose.yml up -d nats etcd mongo
 
 # 停止容器
 docker-down:

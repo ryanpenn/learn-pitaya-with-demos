@@ -3,45 +3,45 @@ package storage
 import (
 	"context"
 
-	"github.com/topfreegames/pitaya/v2"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"learn-pitaya-with-demos/cluster_game/pkg/models"
 )
 
 type AccountDB struct {
-	app pitaya.Pitaya
+	*mongo.Client
 }
 
 // implement repo interface
 var _ models.AccountRepo = (*AccountDB)(nil)
 
-func NewAccountDB(app pitaya.Pitaya) *AccountDB {
+func NewAccountDB(client *mongo.Client) *AccountDB {
 	return &AccountDB{
-		app: app,
+		Client: client,
 	}
 }
 
-func (a AccountDB) GetByID(ctx context.Context, id string) (*models.Account, error) {
+func (a *AccountDB) GetByID(ctx context.Context, id string) (*models.Account, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (a AccountDB) GetByName(ctx context.Context, name string) (*models.Account, error) {
+func (a *AccountDB) GetByName(ctx context.Context, name string) (*models.Account, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (a AccountDB) Create(ctx context.Context, acc *models.Account) (*models.Account, error) {
+func (a *AccountDB) Create(ctx context.Context, acc *models.Account) (*models.Account, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (a AccountDB) ChangePass(ctx context.Context, id, oldPass, newPass string) error {
+func (a *AccountDB) ChangePass(ctx context.Context, id, oldPass, newPass string) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (a AccountDB) Delete(ctx context.Context, id string) error {
+func (a *AccountDB) Delete(ctx context.Context, id string) error {
 	//TODO implement me
 	panic("implement me")
 }

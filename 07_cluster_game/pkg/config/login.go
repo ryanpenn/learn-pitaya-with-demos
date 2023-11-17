@@ -6,4 +6,7 @@ type LoginConfig struct {
 	Mode        string
 	HttpTimeout int64
 	ContextPath string
+	DbName      string
+	DbAddr      string
+	DbTimeout   int64
 }

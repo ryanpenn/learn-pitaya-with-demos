@@ -17,10 +17,12 @@ func HttpEngine(c *config.LoginConfig) http.Handler {
 
 	// check run mode
 	if strings.EqualFold(c.Mode, "debug") {
+		gin.SetMode(gin.DebugMode)
 		r.GET("/ping", func(ctx *gin.Context) {
 			ctx.String(http.StatusOK, "pong")
 		})
 	} else {
+		gin.SetMode(gin.ReleaseMode)
 		r.Use(Timeout(time.Duration(c.HttpTimeout) * time.Second))
 	}
 

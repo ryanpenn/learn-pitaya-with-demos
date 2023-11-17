@@ -5,3 +5,6 @@ httpPort: 9000
 mode: "debug"
 httpTimeout: 1800
 contextPath: "api"
+dbName: "accdb"
+dbAddr: "mongodb://root:12345@127.0.0.1:27017"
+dbTimeout: 90

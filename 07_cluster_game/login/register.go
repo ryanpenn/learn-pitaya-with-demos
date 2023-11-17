@@ -2,7 +2,9 @@ package login
 
 import (
 	"fmt"
+	"learn-pitaya-with-demos/cluster_game/pkg/db"
 	"strings"
+	"time"
 
 	"github.com/topfreegames/pitaya/v2"
 	"github.com/topfreegames/pitaya/v2/component"
@@ -13,24 +15,15 @@ import (
 
 // Register 注册Web服务
 func Register(app pitaya.Pitaya, c *config.LoginConfig) {
-	// 注册 id_maker 模块
-	//id_maker.RegisterModule(app, &id_maker.MConfig{
-	//	NodeIdForShort: 1,
-	//	NodeIdForSnow:  1,
-	//})
 
-	// 注册 mongo 模块
-	//mongo.RegisterModule(app, &mongo.MConfig{
-	//	MasterAddr:    config.DefaultCfg.Mongo.MasterAddr, // 主库地址
-	//	SlaveAddr:     config.DefaultCfg.Mongo.MasterAddr, // 从库地址
-	//	MasterTimeout: config.DefaultCfg.Mongo.MasterTimeout * time.Second,
-	//	SlaveTimeout:  config.DefaultCfg.Mongo.SlaveTimeout * time.Second,
-	//})
+	// 注册 db 模块
+	if err := db.RegisterModule(app, c.DbName, c.DbAddr, time.Duration(c.DbTimeout)*time.Second); err != nil {
+		panic(fmt.Errorf("db module register err: %v", err))
+	}
 
 	// 注册Web模块
 	m := internal.NewWebModule(app, c)
-	err := app.RegisterModule(m, "web")
-	if err != nil {
+	if err := app.RegisterModule(m, "web"); err != nil {
 		panic(fmt.Errorf("web module register err: %v", err))
 	}
 
