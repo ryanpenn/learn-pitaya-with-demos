@@ -13,6 +13,7 @@
 4. [采用protobuf序列化消息](./04_protobuf/README.md)
 5. [采用msgpack序列化消息](./05_msgp/README.md)
 6. [tadpole服务端](./06_tadpole_server/README.md) 分别通过 [nano](https://github.com/lonng/nano) 和 [pitaya](https://github.com/topfreegames/pitaya) 实现
+7. [GameServer](./07_cluster_game/README.md) 综合示例
 
 ## 引用
 

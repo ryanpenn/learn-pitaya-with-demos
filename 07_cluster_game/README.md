@@ -4,7 +4,7 @@
 
 ```bash
 cluster_game
-├─resources             资源目录: 服务器配置,配置表等
+├─assets                资源目录: 服务器配置,服务器数据,通信协议,配置表等
 ├─build                 项目构建脚本: dockerfile,deploy.sh等
 ├─cmd                   项目入口
 ├─chat                  聊天服务器
@@ -14,7 +14,12 @@ cluster_game
 ├─pkg                   公共包
 ├─protos                通信协议
 ├─settings              配置表
-├─main.go               入口
-├─go.mod                项目模块
-└─README.md             项目说明
+├─main.go
+├─Makefile
+├─go.mod
+└─README.md
 ```
+
+## Servers
+
+![Servers](../docs/07.jpg)
