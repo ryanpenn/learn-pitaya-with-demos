@@ -2,6 +2,7 @@ package internal
 
 import (
 	"github.com/gin-contrib/cors"
+	"github.com/topfreegames/pitaya/v2"
 	"net/http"
 	"strings"
 	"time"
@@ -11,7 +12,7 @@ import (
 	"learn-pitaya-with-demos/cluster_game/pkg/config"
 )
 
-func HttpEngine(c *config.LoginConfig) http.Handler {
+func HttpEngine(app pitaya.Pitaya, c *config.LoginConfig) http.Handler {
 	r := gin.Default()
 	r.Use(cors.Default())
 
@@ -29,13 +30,13 @@ func HttpEngine(c *config.LoginConfig) http.Handler {
 	// routers
 	g := r.Group(c.ContextPath)
 	{
-		h := &HttpHandler{cfg: c}
+		h := &HttpHandler{app: app, cfg: c}
 		g.POST("entry", h.Entry)
 		g.POST("login", h.Login)
 		g.POST("reg", h.Reg)
 
 		// need auth
-		g.POST("list", Auth(), h.ServerList)
+		g.POST("list", Auth(c.TokenSecure), h.ServerList)
 	}
 
 	return r

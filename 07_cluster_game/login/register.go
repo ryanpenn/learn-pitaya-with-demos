@@ -27,9 +27,6 @@ func Register(app pitaya.Pitaya, c *config.LoginConfig) {
 		panic(fmt.Errorf("web module register err: %v", err))
 	}
 
-	// 注册 handler
-	app.Register(internal.NewHandler(app, c), component.WithName("handler"), component.WithNameFunc(strings.ToLower))
-
 	// 注册 remote
 	app.RegisterRemote(internal.NewRemote(app, c), component.WithName("remote"), component.WithNameFunc(strings.ToLower))
 }

@@ -27,7 +27,7 @@ func NewWebModule(app pitaya.Pitaya, c *config.LoginConfig) *WebModule {
 		app: app,
 		svr: &http.Server{
 			Addr:    fmt.Sprintf(":%d", c.HttpPort),
-			Handler: HttpEngine(c),
+			Handler: HttpEngine(app, c),
 		},
 	}
 

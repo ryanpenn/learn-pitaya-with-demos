@@ -5,6 +5,7 @@ type LoginConfig struct {
 	HttpPort    int
 	Mode        string
 	HttpTimeout int64
+	TokenSecure string
 	ContextPath string
 	DbName      string
 	DbAddr      string

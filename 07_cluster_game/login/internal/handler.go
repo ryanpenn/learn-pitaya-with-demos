@@ -1,28 +1,33 @@
 package internal
 
 import (
-	"context"
+	"github.com/gin-gonic/gin"
 	"github.com/topfreegames/pitaya/v2"
-	"github.com/topfreegames/pitaya/v2/component"
+
 	"learn-pitaya-with-demos/cluster_game/pkg/config"
-	"learn-pitaya-with-demos/cluster_game/pkg/msg"
 )
 
-type Handler struct {
-	component.Base
+type HttpHandler struct {
 	app pitaya.Pitaya
 	cfg *config.LoginConfig
 }
 
-func NewHandler(app pitaya.Pitaya, c *config.LoginConfig) *Handler {
-	return &Handler{
-		app: app,
-		cfg: c,
-	}
+// Entry 获取登录地址
+func (h *HttpHandler) Entry(c *gin.Context) {
+
 }
 
-// Auth 校验Token
-func (h *Handler) Auth(ctx context.Context, req *msg.ReqAuth) (*msg.Empty, error) {
+// Login 登录
+func (h *HttpHandler) Login(c *gin.Context) {
 
-	return nil, nil
+}
+
+// Reg 注册
+func (h *HttpHandler) Reg(c *gin.Context) {
+
+}
+
+// ServerList 服务器列表
+func (h *HttpHandler) ServerList(c *gin.Context) {
+
 }

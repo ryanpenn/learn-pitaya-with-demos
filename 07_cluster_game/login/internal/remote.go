@@ -5,6 +5,7 @@ import (
 	"github.com/topfreegames/pitaya/v2"
 	"github.com/topfreegames/pitaya/v2/component"
 	"learn-pitaya-with-demos/cluster_game/pkg/config"
+	"learn-pitaya-with-demos/cluster_game/pkg/msg"
 
 	"learn-pitaya-with-demos/cluster_game/protos"
 )
@@ -21,6 +22,18 @@ func NewRemote(app pitaya.Pitaya, c *config.LoginConfig) *Remote {
 		app: app,
 		cfg: c,
 	}
+}
+
+// Auth 校验Token
+func (r *Remote) Auth(ctx context.Context, arg *protos.RPCMsg) (*msg.Empty, error) {
+
+	return nil, nil
+}
+
+// Renewal 续签Token
+func (r *Remote) Renewal(ctx context.Context, arg *protos.RPCMsg) (*protos.RPCMsg, error) {
+
+	return nil, nil
 }
 
 // 获取角色信息
