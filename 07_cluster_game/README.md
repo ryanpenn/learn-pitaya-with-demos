@@ -38,25 +38,18 @@ cluster_game
 
 ### 登录/注册
 
-#### 获取登录地址
-- 接口: `/entry`
-- 协议: `http`
-- 参数: `dto.ReqEntry` 客户端信息
-- 返回: `dto.RespEntry` 登录服地址
-- 说明: 这个接口的作用是根据客户端信息，进行客户端版本校验，返回登录服地址给客户端。
-
 #### 登录
 - 接口: `/login`
 - 协议: `http`
 - 参数: `dto.ReqLogin` 用户名/密码
-- 返回: `dto.RespLogin` 返回状态码、Token、`gate`服地址
+- 返回: `dto.RespLogin` 返回状态码、token、`gate`服地址
 - 说明: 账号登录
 
 #### 注册
 - 接口: `/reg`
 - 协议: `http`
 - 参数: `dto.ReqReg` 用户名/密码
-- 返回: `dto.RespReg` 返回状态码、Token、`gate`服地址
+- 返回: `dto.RespReg` 返回状态码、token、`gate`服地址
 - 说明: 账号注册
 
 #### 获取服务器列表

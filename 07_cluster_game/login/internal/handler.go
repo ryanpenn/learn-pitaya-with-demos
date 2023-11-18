@@ -12,11 +12,6 @@ type HttpHandler struct {
 	cfg *config.LoginConfig
 }
 
-// Entry 获取登录地址
-func (h *HttpHandler) Entry(c *gin.Context) {
-
-}
-
 // Login 登录
 func (h *HttpHandler) Login(c *gin.Context) {
 

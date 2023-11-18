@@ -31,12 +31,11 @@ func HttpEngine(app pitaya.Pitaya, c *config.LoginConfig) http.Handler {
 	g := r.Group(c.ContextPath)
 	{
 		h := &HttpHandler{app: app, cfg: c}
-		g.POST("entry", h.Entry)
 		g.POST("login", h.Login)
 		g.POST("reg", h.Reg)
 
 		// need auth
-		g.POST("list", Auth(c.TokenSecure), h.ServerList)
+		g.POST("serverlist", Auth(c.TokenSecure), h.ServerList)
 	}
 
 	return r
