@@ -58,3 +58,42 @@ cluster_game
 - 参数: 无 (携带Token请求)
 - 返回: `dto.RespServerList` 返回状态码、`game`服列表（含角色信息）
 - 说明: 获取服务器列表，包含当前用户的角色信息
+
+### 游戏
+
+### 角色信息
+- 接口: `game.handler.playerinfo`
+- 协议: `ws`
+- 方法: `Request`
+- 返回: `dto.PlayerInfo`
+- 说明: 获取角色信息
+
+### 做任务
+- 接口: `game.handler.dotask`
+- 协议: `ws`
+- 方法: `Notify`
+- 参数: `taskID`
+- 说明: 做任务
+
+### 角色升级
+- 接口: `game.push.playerupdate`
+- 协议: `ws`
+- 方法: `Push`
+- 返回: `dto.PlayerUpdateInfo`
+- 说明: 角色升级信息
+
+### 聊天
+
+### 发送消息
+- 接口: `chat.handler.send`
+- 协议: `ws`
+- 方法: `Notify`
+- 参数: `dto.ChatMessage`
+- 说明: 发送消息
+
+### 收到消息
+- 接口: `chat.push.message`
+- 协议: `ws`
+- 方法: `Push`
+- 参数: `dto.ChatMessage`
+- 说明: 收到消息

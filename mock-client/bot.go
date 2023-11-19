@@ -3,12 +3,14 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
+	"time"
 )
 
 type Bot struct {
 	Name     string
 	Password string
-	uid      string
+	uid      int64
 	client   *GameClient
 	stopCh   chan struct{}
 }
@@ -97,7 +99,8 @@ func (b *Bot) ConnectToGame(serverID int) bool {
 			case <-b.stopCh:
 				return
 			default:
-				b.OnPlayerUpdate(b.client.ReceivePush("game.playerupdate", 1))
+				b.OnPlayerUpdate(b.client.ReceivePush("game.push.playerupdate", 1))
+				b.OnChatMessage(b.client.ReceivePush("chat.push.message", 1))
 			}
 		}
 	}()
@@ -117,5 +120,134 @@ func (b *Bot) OnPlayerUpdate(data []byte, err error) {
 		return
 	}
 
-	fmt.Println("OnPlayerUpdate", data)
+	info := PlayerUpdateInfo{}
+	err = json.Unmarshal(data, &info)
+	if err != nil {
+		fmt.Println("OnPlayerUpdate Unmarshal err", err)
+		return
+	}
+
+	fmt.Println("PlayerUpdate...", info)
+}
+
+func (b *Bot) OnChatMessage(data []byte, err error) {
+	if err != nil {
+		return
+	}
+
+	msg := ChatMessage{}
+	err = json.Unmarshal(data, &msg)
+	if err != nil {
+		fmt.Println("OnChatMessage Unmarshal err", err)
+		return
+	}
+
+	switch msg.ChatType {
+	case 0:
+		fmt.Printf("收到用户 %d 的消息：%s \n", msg.From, msg.Content)
+	case 1:
+		fmt.Printf("收到用户 %d 在世界频道的消息：%s \n", msg.From, msg.Content)
+	case 2:
+		fmt.Printf("收到用户 %d 在跨服频道的消息：%s \n", msg.From, msg.Content)
+	}
+
+	fmt.Println("OnChatMessage", msg)
+}
+
+func (b *Bot) PlayerInfo(roleID int64) {
+	route := "game.handler.playerinfo"
+	req := PlayerInfoReq{
+		ID: roleID,
+	}
+	data, _ := json.Marshal(req)
+	resp, err := b.client.Request(route, data)
+	if err != nil {
+		fmt.Println("PlayerInfo Request err", err)
+		return
+	}
+
+	var info PlayerInfo
+	err = json.Unmarshal(resp.data, &info)
+	if err != nil {
+		fmt.Println("PlayerInfo Unmarshal err", err)
+		return
+	}
+
+	b.uid = info.ID
+	fmt.Println("PlayerInfo", info)
+}
+
+func (b *Bot) DoTask() {
+	route := "game.handler.dotask"
+	taskID := rand.Int63n(5) + 1
+	data, _ := json.Marshal(&TaskReq{
+		ID: taskID,
+	})
+	err := b.client.Notify(route, data)
+	if err != nil {
+		fmt.Println("DoTask Notify err", err)
+		return
+	}
+}
+
+func (b *Bot) Chat(num int) {
+	route := "chat.handler.send"
+
+	// 随机发给一位玩家
+	targetID := int64(rand.Intn(num) + 1)
+	if targetID == b.uid {
+		if targetID-1 == 0 {
+			targetID++
+		} else {
+			targetID--
+		}
+	}
+
+	msg := ChatMessage{
+		ChatType: 0,
+		From:     b.uid,
+		To:       targetID,
+		Content:  fmt.Sprintf("单聊消息"),
+		Time:     time.Now().Unix(),
+	}
+	data, _ := json.Marshal(&msg)
+	err := b.client.Notify(route, data)
+	if err != nil {
+		fmt.Println("Chat Notify err", err)
+		return
+	}
+}
+
+func (b *Bot) WorldChat(serverID int) {
+	route := "chat.handler.send"
+	msg := ChatMessage{
+		ChatType: 1,
+		From:     b.uid,
+		To:       int64(serverID),
+		Content:  fmt.Sprintf("世界消息"),
+		Time:     time.Now().Unix(),
+	}
+	data, _ := json.Marshal(&msg)
+	err := b.client.Notify(route, data)
+	if err != nil {
+		fmt.Println("WorldChat Notify err", err)
+		return
+	}
+}
+
+func (b *Bot) CrossChat() {
+	route := "chat.handler.send"
+	msg := ChatMessage{
+		ChatType: 2,
+		From:     b.uid,
+		To:       0,
+		Content:  fmt.Sprintf("跨服消息"),
+		Time:     time.Now().Unix(),
+	}
+	data, _ := json.Marshal(&msg)
+	err := b.client.Notify(route, data)
+	if err != nil {
+		fmt.Println("CrossChat Notify err", err)
+		return
+	}
 }

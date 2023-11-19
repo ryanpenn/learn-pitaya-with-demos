@@ -2,7 +2,10 @@ module learn-pitaya-with-demos/mock-client
 
 go 1.21.2
 
-require github.com/topfreegames/pitaya/v2 v2.8.0
+require (
+	github.com/sirupsen/logrus v1.9.2
+	github.com/topfreegames/pitaya/v2 v2.8.0
+)
 
 require (
 	github.com/DataDog/datadog-go v4.8.3+incompatible // indirect
@@ -38,7 +41,6 @@ require (
 	github.com/prometheus/client_model v0.4.0 // indirect
 	github.com/prometheus/common v0.43.0 // indirect
 	github.com/prometheus/procfs v0.10.1 // indirect
-	github.com/sirupsen/logrus v1.9.2 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
