@@ -1,0 +1,4 @@
+serverConfig:
+  serverType: "gate"
+  isFrontend: true
+port: 10001

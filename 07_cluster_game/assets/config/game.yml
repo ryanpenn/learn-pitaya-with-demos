@@ -1,0 +1,7 @@
+serverConfig:
+  serverType: "game"
+  isFrontend: false
+serverID: 1
+dbName: "game_1"
+dbAddr: "mongodb://root:12345@127.0.0.1:27017"
+dbTimeout: 90

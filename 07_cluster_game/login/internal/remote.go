@@ -2,11 +2,11 @@ package internal
 
 import (
 	"context"
+	"fmt"
 	"github.com/topfreegames/pitaya/v2"
 	"github.com/topfreegames/pitaya/v2/component"
+	"github.com/topfreegames/pitaya/v2/errors"
 	"learn-pitaya-with-demos/cluster_game/pkg/config"
-	"learn-pitaya-with-demos/cluster_game/pkg/msg"
-
 	"learn-pitaya-with-demos/cluster_game/protos"
 )
 
@@ -25,9 +25,15 @@ func NewRemote(app pitaya.Pitaya, c *config.LoginConfig) *Remote {
 }
 
 // Auth 校验Token
-func (r *Remote) Auth(ctx context.Context, arg *protos.RPCMsg) (*msg.Empty, error) {
+func (r *Remote) Auth(ctx context.Context, arg *protos.RPCMsg) (*protos.RPCEmpty, error) {
+	if arg != nil {
+		fmt.Println("arg", arg.Content)
+		if arg.Content == "token" {
+			return &protos.RPCEmpty{}, nil
+		}
+	}
 
-	return nil, nil
+	return nil, errors.NewError(fmt.Errorf("no auth"), "401")
 }
 
 // Renewal 续签Token

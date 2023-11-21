@@ -12,8 +12,9 @@ type LoginResp struct {
 }
 
 type ServerInfo struct {
-	ServerID   int
+	ServerID   string
 	ServerName string
+	ServerKey  string // uuid
 	Role       *RoleInfo
 }
 

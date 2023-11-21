@@ -27,3 +27,13 @@ docker-down:
 # login-server
 login:
 	go run . start login
+
+.PHONY: game
+# game-server
+game:
+	go run . start game
+
+.PHONY: gate
+# gate-server
+gate:
+	go run . start gate

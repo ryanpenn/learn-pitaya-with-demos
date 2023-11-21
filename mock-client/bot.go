@@ -20,6 +20,7 @@ func NewBot(name, pass string, cfg *GameConfig) *Bot {
 		Name:     name,
 		Password: pass,
 		client:   NewClient(cfg),
+		stopCh:   make(chan struct{}),
 	}
 }
 
@@ -81,10 +82,10 @@ func (b *Bot) ServerList() []*ServerInfo {
 	return list
 }
 
-func (b *Bot) ConnectToGame(serverID int) bool {
+func (b *Bot) ConnectToGame(key string) bool {
 	err := b.client.Connect(map[string]interface{}{
 		"token": b.client.GetToken(),
-		"id":    serverID,
+		"key":   key,
 	})
 	if err != nil {
 		fmt.Println("Connect err", err)
@@ -110,9 +111,8 @@ func (b *Bot) ConnectToGame(serverID int) bool {
 
 func (b *Bot) Shutdown() {
 	b.stopCh <- struct{}{}
-	close(b.stopCh)
 	b.client.Disconnect()
-	fmt.Println("bot shutdown...bye")
+	close(b.stopCh)
 }
 
 func (b *Bot) OnPlayerUpdate(data []byte, err error) {
@@ -127,7 +127,7 @@ func (b *Bot) OnPlayerUpdate(data []byte, err error) {
 		return
 	}
 
-	fmt.Println("PlayerUpdate...", info)
+	fmt.Println("PlayerUpdate...")
 }
 
 func (b *Bot) OnChatMessage(data []byte, err error) {

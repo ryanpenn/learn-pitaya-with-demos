@@ -61,6 +61,14 @@ cluster_game
 
 ### 游戏
 
+### 进入游戏
+- 接口: `game.handler.entry`
+- 协议: `ws`
+- 方法: `Request`
+- 参数: `dto.ReqGameEntry` 登录信息
+- 返回: `dto.RespGameEntry` 校验信息
+- 说明: 进入游戏服的第一个消息
+
 ### 角色信息
 - 接口: `game.handler.playerinfo`
 - 协议: `ws`
@@ -84,6 +92,13 @@ cluster_game
 
 ### 聊天
 
+- 接口: `chat.handler.entry`
+- 协议: `ws`
+- 方法: `Request`
+- 参数: `dto.ReqChatEntry` 登录信息
+- 返回: `dto.RespChatEntry` 校验信息
+- 说明: 进入聊天服的第一个消息
+
 ### 发送消息
 - 接口: `chat.handler.send`
 - 协议: `ws`
@@ -97,3 +112,14 @@ cluster_game
 - 方法: `Push`
 - 参数: `dto.ChatMessage`
 - 说明: 收到消息
+
+## Process
+
+### 登录游戏流程
+1. 玩家通过 `login`服 登录，如果账号不存在，则自动注册一个
+2. 登录成功后，返回 token 和 `gate`服地址 给客户端
+3. 客户端携带token向`login`服请求 游戏服列表（ServerList）；服务器返回 ServerList（如果用户创建过角色，则包含已创建的角色信息）
+4. 客户端向`gate`服发起websocket连接请求，在`HandshakeData`里携带 token和key 信息
+5. 在gate服的`HandshakeValidator`里校验token和key
+6. ws连接成功后，请求 `game.handler.playerInfo` 获取用户角色信息(无角色就自动创角)
+7. 返回用户角色信息（playerInfo）

@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	Authentication           = "Authentication"
+	Authorization            = "Authorization"
 	ContentType              = "Content-Type"
 	ContentTypeJson          = "application/json"
 	GinContextOfAccountToken = "token"
@@ -24,12 +24,19 @@ type tokenClaims struct {
 
 func Auth(secure string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader(Authentication)
+		token := ctx.GetHeader(Authorization)
+
+		// TODO 临时通过
+		if token != "" {
+			fmt.Println("token pass", token)
+			return
+		}
+
 		at, err := ValidateToken(token, secure)
 		if err != nil {
 			ctx.Writer.Header().Set(ContentType, ContentTypeJson)
 			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"code": "",
+				"code": "0",
 				"msg":  "Invalid Token",
 			})
 			return

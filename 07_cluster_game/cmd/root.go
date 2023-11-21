@@ -35,6 +35,8 @@ func init() {
 	rootCmd.AddCommand(startCmd)
 	// start
 	startCmd.AddCommand(servers.LoginServer) // start login
+	startCmd.AddCommand(servers.GameServer)  // start game
+	startCmd.AddCommand(servers.GateServer)  // start gate
 }
 
 func Execute() {
