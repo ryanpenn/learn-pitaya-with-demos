@@ -7,6 +7,7 @@ import (
 	pConfig "github.com/topfreegames/pitaya/v2/config"
 	"github.com/topfreegames/pitaya/v2/serialize"
 	"github.com/topfreegames/pitaya/v2/serialize/json"
+	"learn-pitaya-with-demos/cluster_game/chat"
 	"learn-pitaya-with-demos/cluster_game/game"
 	"learn-pitaya-with-demos/cluster_game/gate"
 	"learn-pitaya-with-demos/cluster_game/login"
@@ -42,6 +43,22 @@ var GameServer = &cobra.Command{
 			return
 		} else {
 			game.Start(c, serializer, pConfig.NewConfig(viper.GetViper()))
+		}
+	},
+}
+
+var ChatServer = &cobra.Command{
+	Use:   "chat",
+	Short: "start chat server",
+	Run: func(cmd *cobra.Command, args []string) {
+		var serializer serialize.Serializer
+		serializer = json.NewSerializer()
+
+		if c, err := config.Load[config.ChatConfig]("assets/config/", "chat", "yaml"); err != nil {
+			fmt.Println("config load err", err)
+			return
+		} else {
+			chat.Start(c, serializer, pConfig.NewConfig(viper.GetViper()))
 		}
 	},
 }

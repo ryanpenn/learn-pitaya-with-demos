@@ -26,7 +26,7 @@ func sessionHandler(c *config.GateConfig, app pitaya.Pitaya, pool session.Sessio
 	app.GetServer().Metadata[MetaKeyOfConnects] = strconv.Itoa(0)
 	app.GetServer().Metadata[MetaKeyOfPort] = strconv.Itoa(c.Port)
 
-	// TODO: 在这里校验token？
+	// 在这里校验token
 	pool.AddHandshakeValidator("game", func(data *session.HandshakeData) error {
 		// 登录的game服
 		if _, exist := data.User["key"]; !exist {

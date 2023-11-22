@@ -33,6 +33,11 @@ login:
 game:
 	go run . start game
 
+.PHONY: chat
+# chat-server
+chat:
+	go run . start chat
+
 .PHONY: gate
 # gate-server
 gate:

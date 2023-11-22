@@ -44,7 +44,7 @@ type PlayerUpdateInfo struct {
 }
 
 type ChatMessage struct {
-	ChatType int // 0:单聊 1:单服群里 2:跨服群聊
+	ChatType int // 0:单聊 1:群聊
 	From     int64
 	To       int64
 	Content  string

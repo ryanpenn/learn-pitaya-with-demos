@@ -1,0 +1,3 @@
+serverConfig:
+  serverType: "chat"
+  isFrontend: false

@@ -36,6 +36,7 @@ func init() {
 	// start
 	startCmd.AddCommand(servers.LoginServer) // start login
 	startCmd.AddCommand(servers.GameServer)  // start game
+	startCmd.AddCommand(servers.ChatServer)  // start chat
 	startCmd.AddCommand(servers.GateServer)  // start gate
 }
 

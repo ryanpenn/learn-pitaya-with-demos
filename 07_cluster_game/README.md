@@ -5,7 +5,6 @@
 ```bash
 cluster_game
 ├─assets                资源目录: 服务器配置,服务器数据,通信协议,配置表等
-├─build                 项目构建脚本: dockerfile,deploy.sh等
 ├─cmd                   项目入口
 ├─chat                  聊天服务器
 ├─game                  游戏服务器

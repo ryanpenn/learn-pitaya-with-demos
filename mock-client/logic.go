@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -33,7 +34,7 @@ func RunBot(num int, cfg *GameConfig) {
 				return
 			}
 
-			if bot.ConnectToGame(list[0].ServerKey) {
+			if bot.ConnectToGame(list[0]) {
 				defer func() {
 					<-time.After(time.Duration(5) * time.Second)
 					fmt.Println("bot Shutdown...")
@@ -49,10 +50,10 @@ func RunBot(num int, cfg *GameConfig) {
 				bot.DoTask()
 
 				// chat
-				//bot.Chat(num)
-				//sid, _ := strconv.Atoi(list[0].ServerID)
-				//bot.WorldChat(sid)
-				//bot.CrossChat()
+				bot.Chat(num)
+				sid, _ := strconv.Atoi(list[0].ServerID)
+				bot.WorldChat(sid)
+				bot.CrossChat()
 			}
 
 			fmt.Println(name, "end")

@@ -82,10 +82,11 @@ func (b *Bot) ServerList() []*ServerInfo {
 	return list
 }
 
-func (b *Bot) ConnectToGame(key string) bool {
+func (b *Bot) ConnectToGame(info *ServerInfo) bool {
 	err := b.client.Connect(map[string]interface{}{
 		"token": b.client.GetToken(),
-		"key":   key,
+		"id":    info.ServerID,
+		"key":   info.ServerKey,
 	})
 	if err != nil {
 		fmt.Println("Connect err", err)
@@ -193,18 +194,10 @@ func (b *Bot) DoTask() {
 func (b *Bot) Chat(num int) {
 	route := "chat.handler.send"
 
-	// 随机发给一位玩家
+	// 随机发给一位玩家(包括自己）
 	targetID := int64(rand.Intn(num) + 1)
-	if targetID == b.uid {
-		if targetID-1 == 0 {
-			targetID++
-		} else {
-			targetID--
-		}
-	}
-
 	msg := ChatMessage{
-		ChatType: 0,
+		ChatType: 0, // 单聊
 		From:     b.uid,
 		To:       targetID,
 		Content:  fmt.Sprintf("单聊消息"),
@@ -221,7 +214,7 @@ func (b *Bot) Chat(num int) {
 func (b *Bot) WorldChat(serverID int) {
 	route := "chat.handler.send"
 	msg := ChatMessage{
-		ChatType: 1,
+		ChatType: 1, // 群聊
 		From:     b.uid,
 		To:       int64(serverID),
 		Content:  fmt.Sprintf("世界消息"),
@@ -238,9 +231,9 @@ func (b *Bot) WorldChat(serverID int) {
 func (b *Bot) CrossChat() {
 	route := "chat.handler.send"
 	msg := ChatMessage{
-		ChatType: 2,
+		ChatType: 1, // 群聊
 		From:     b.uid,
-		To:       0,
+		To:       0, // 跨服
 		Content:  fmt.Sprintf("跨服消息"),
 		Time:     time.Now().Unix(),
 	}

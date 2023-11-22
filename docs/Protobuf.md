@@ -1,4 +1,4 @@
-# 使用 grpc/protobuf 通信
+# 使用 protobuf 协议
 
 > 遵循 [proto3](https://developers.google.com/protocol-buffers/docs/proto3) Language Guide
 
