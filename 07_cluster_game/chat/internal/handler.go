@@ -25,7 +25,7 @@ func (h *ChatHandler) AfterInit() {
 }
 
 func (h *ChatHandler) History(ctx context.Context, msg *ReqChatHistory) ([]*ChatHistory, error) {
-	list, err := h.manager.GetChatHistory(ctx, msg)
+	list, err := h.manager.getChatHistory(ctx, msg)
 	if err != nil {
 		return nil, errors.NewError(err, "500")
 	}

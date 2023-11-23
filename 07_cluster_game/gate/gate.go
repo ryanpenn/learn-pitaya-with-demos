@@ -82,8 +82,8 @@ func handleOffline(app pitaya.Pitaya, key, uid string) {
 
 // addGameRouter 为game服添加路由
 func addGameRouter(app pitaya.Pitaya, serverType string) {
-	app.AddRoute(serverType, func(ctx context.Context, route *route.Route, payload []byte, servers map[string]*cluster.Server) (*cluster.Server, error) {
-		logger.Log.Debug("request router.= ", route.String())
+	err := app.AddRoute(serverType, func(ctx context.Context, route *route.Route, payload []byte, servers map[string]*cluster.Server) (*cluster.Server, error) {
+		logger.Log.Debug("request router = ", route.String())
 
 		s := app.GetSessionFromCtx(ctx)
 		key := s.GetHandshakeData().User["key"].(string)
@@ -93,4 +93,7 @@ func addGameRouter(app pitaya.Pitaya, serverType string) {
 
 		return nil, errors.NewError(fmt.Errorf("server unavailable"), "500")
 	})
+	if err != nil {
+		fmt.Println("addGameRouter err", err)
+	}
 }

@@ -9,13 +9,6 @@ type ChatMessage struct {
 	Time     int64
 }
 
-// RoomInfo 群聊信息
-type RoomInfo struct {
-	ID       int64
-	RoomType int // 0:单服群 1:联盟群 2:活动群(跨服)
-	Name     string
-}
-
 // ReqChatHistory 请求聊天记录
 type ReqChatHistory struct {
 }

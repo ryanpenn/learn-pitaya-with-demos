@@ -34,7 +34,11 @@ func (r *ChatRemote) Join(ctx context.Context, arg *protos.RPCMsg) (*protos.RPCE
 
 	// 用户加入群组
 	err = r.manager.joinToGroup(ctx, req.GroupID, req.UID)
-	return &protos.RPCEmpty{}, errors.NewError(err, "500")
+	if err != nil {
+		return &protos.RPCEmpty{}, errors.NewError(err, "500")
+	}
+
+	return &protos.RPCEmpty{}, nil
 }
 
 func (r *ChatRemote) Leave(ctx context.Context, arg *protos.RPCMsg) (*protos.RPCEmpty, error) {
@@ -46,5 +50,25 @@ func (r *ChatRemote) Leave(ctx context.Context, arg *protos.RPCMsg) (*protos.RPC
 
 	// 用户离开群组
 	err = r.manager.leaveGroup(ctx, req.UID, req.GroupID)
-	return &protos.RPCEmpty{}, errors.NewError(err, "500")
+	if err != nil {
+		return &protos.RPCEmpty{}, err
+	}
+
+	return &protos.RPCEmpty{}, nil
+}
+
+func (r *ChatRemote) Create(ctx context.Context, arg *protos.RPCMsg) (*protos.RPCEmpty, error) {
+	err := r.manager.createGroup(ctx, arg.Code)
+	if err != nil {
+		return &protos.RPCEmpty{}, errors.NewError(err, "500")
+	}
+	return &protos.RPCEmpty{}, nil
+}
+
+func (r *ChatRemote) Remove(ctx context.Context, arg *protos.RPCMsg) (*protos.RPCEmpty, error) {
+	err := r.manager.removeGroup(ctx, arg.Code)
+	if err != nil {
+		return &protos.RPCEmpty{}, errors.NewError(err, "500")
+	}
+	return &protos.RPCEmpty{}, nil
 }

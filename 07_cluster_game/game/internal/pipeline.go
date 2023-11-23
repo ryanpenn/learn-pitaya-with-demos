@@ -50,8 +50,10 @@ func (p *Pipeline) BeforeRequest(ctx context.Context, in interface{}) (context.C
 
 func (p *Pipeline) AfterRequest(ctx context.Context, out interface{}, err error) (interface{}, error) {
 	if err != nil {
-		// log the error
 		fmt.Println("After Request: ", err)
+		if _, ok := err.(*errors.Error); !ok {
+			err = errors.NewError(err, "500")
+		}
 	}
 	return out, err
 }

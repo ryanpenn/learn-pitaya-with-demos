@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/topfreegames/pitaya/v2"
+	"github.com/topfreegames/pitaya/v2/logger"
 	"github.com/topfreegames/pitaya/v2/modules"
 	"learn-pitaya-with-demos/cluster_game/pkg/config"
 	"learn-pitaya-with-demos/cluster_game/pkg/db"
@@ -17,14 +18,14 @@ type ChatManager struct {
 	cfg *config.ChatConfig
 
 	roomsMutex sync.Mutex
-	rooms      map[string]*RoomInfo
+	rooms      map[int64]string // id:name
 }
 
 func NewChatManager(app pitaya.Pitaya, c *config.ChatConfig) *ChatManager {
 	return &ChatManager{
 		app:   app,
 		cfg:   c,
-		rooms: make(map[string]*RoomInfo),
+		rooms: make(map[int64]string),
 	}
 }
 
@@ -34,24 +35,13 @@ func GetManager(app pitaya.Pitaya) *ChatManager {
 }
 
 func (m *ChatManager) AfterInit() {
-	// 加载聊天群组信息
+	// TODO load data from db
 	chatDB := db.GetModule(m.app, "chat")
 	_ = chatDB
 
-	m.roomsMutex.Lock()
-	defer m.roomsMutex.Unlock()
-
-	// 创建聊天群组
-	list := []int64{1, 2}
-	var key string
-	for _, v := range list {
-		key = groupName(v)
-		m.rooms[key] = &RoomInfo{
-			ID:       v,
-			RoomType: 0,
-			Name:     groupName(v),
-		}
-		m.app.GroupCreate(context.Background(), key)
+	err := m.createGroup(context.TODO(), 0)
+	if err != nil {
+		logger.Log.Errorf("GroupCreate err %v", err)
 	}
 }
 
@@ -59,7 +49,7 @@ func (m *ChatManager) BeforeShutdown() {
 	// TODO save data
 }
 
-func (m *ChatManager) GetChatHistory(ctx context.Context, msg *ReqChatHistory) ([]*ChatHistory, error) {
+func (m *ChatManager) getChatHistory(ctx context.Context, msg *ReqChatHistory) ([]*ChatHistory, error) {
 	// 获取聊天记录
 	var list []*ChatHistory
 
@@ -80,14 +70,12 @@ func (m *ChatManager) pushToUser(ctx context.Context, from, to int64, content st
 }
 
 func (m *ChatManager) pushToGroup(ctx context.Context, from, to int64, content string) error {
-	group := groupName(to)
-
 	m.roomsMutex.Lock()
-	_, exist := m.rooms[group]
+	_, exist := m.rooms[to]
 	m.roomsMutex.Unlock()
 
 	if exist {
-		if err := m.app.GroupBroadcast(ctx, "gate", group, "chat.push.message", &ChatMessage{
+		if err := m.app.GroupBroadcast(ctx, "gate", groupName(to), "chat.push.message", &ChatMessage{
 			ChatType: 1,
 			From:     from,
 			To:       to,
@@ -105,18 +93,18 @@ func (m *ChatManager) pushToGroup(ctx context.Context, from, to int64, content s
 
 func (m *ChatManager) joinToGroup(ctx context.Context, groupID, id int64) error {
 	uid := fmt.Sprintf("%d", id)
-	key := groupName(groupID)
+	name := groupName(groupID)
 
 	m.roomsMutex.Lock()
-	_, exist := m.rooms[key]
+	_, exist := m.rooms[groupID]
 	m.roomsMutex.Unlock()
 
 	if !exist {
-		return fmt.Errorf("group %d not exist", groupID)
+		return fmt.Errorf("group %s not exist", name)
 	}
 
-	if have, _ := m.app.GroupContainsMember(ctx, key, uid); !have {
-		return m.app.GroupAddMember(ctx, key, uid)
+	if have, _ := m.app.GroupContainsMember(ctx, name, uid); !have {
+		return m.app.GroupAddMember(ctx, name, uid)
 	}
 
 	return nil
@@ -124,21 +112,55 @@ func (m *ChatManager) joinToGroup(ctx context.Context, groupID, id int64) error 
 
 func (m *ChatManager) leaveGroup(ctx context.Context, groupID, id int64) error {
 	uid := fmt.Sprintf("%d", id)
-	key := groupName(groupID)
+	name := groupName(groupID)
 
 	m.roomsMutex.Lock()
-	_, exist := m.rooms[key]
+	_, exist := m.rooms[groupID]
 	m.roomsMutex.Unlock()
 
 	if !exist {
-		return fmt.Errorf("group %d not exist", groupID)
+		return fmt.Errorf("group %s not exist", name)
 	}
 
-	if have, _ := m.app.GroupContainsMember(ctx, key, uid); have {
-		return m.app.GroupRemoveMember(ctx, key, uid)
+	if have, _ := m.app.GroupContainsMember(ctx, name, uid); have {
+		return m.app.GroupRemoveMember(ctx, name, uid)
 	}
 
 	return nil
+}
+
+func (m *ChatManager) createGroup(ctx context.Context, groupID int64) error {
+	name := groupName(groupID)
+
+	m.roomsMutex.Lock()
+	_, exist := m.rooms[groupID]
+	if !exist {
+		m.rooms[groupID] = name
+	}
+	m.roomsMutex.Unlock()
+
+	if exist {
+		return fmt.Errorf("group %s is exist", name)
+	}
+
+	return m.app.GroupCreate(ctx, name)
+}
+
+func (m *ChatManager) removeGroup(ctx context.Context, groupID int64) error {
+	name := groupName(groupID)
+
+	m.roomsMutex.Lock()
+	_, exist := m.rooms[groupID]
+	if exist {
+		delete(m.rooms, groupID)
+	}
+	m.roomsMutex.Unlock()
+
+	if !exist {
+		return fmt.Errorf("group %s not exist", name)
+	}
+
+	return m.app.GroupDelete(ctx, name)
 }
 
 func groupName(roomId int64) string {

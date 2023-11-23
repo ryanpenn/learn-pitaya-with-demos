@@ -25,11 +25,18 @@ func (r *GameRemote) Offline(ctx context.Context, arg *protos.RPCMsg) (*protos.R
 	// 处理用户掉线
 	fmt.Println("Offline", arg.Content)
 
-	// 加入聊天组
+	r.leaveChatRoom(ctx)
+
+	return &protos.RPCEmpty{}, nil
+}
+
+func (r *GameRemote) leaveChatRoom(ctx context.Context) {
 	uid := r.app.GetSessionFromCtx(ctx).UID()
-	sid := r.app.GetServer().Metadata["game_server_id"]
 	id, _ := strconv.ParseInt(uid, 10, 64)
+
+	sid := r.app.GetServer().Metadata["game_server_id"]
 	groupID, _ := strconv.ParseInt(sid, 10, 64)
+
 	join := &ChatJoin{
 		UID:     id,
 		GroupID: groupID,
@@ -42,6 +49,4 @@ func (r *GameRemote) Offline(ctx context.Context, arg *protos.RPCMsg) (*protos.R
 	if err != nil {
 		fmt.Println("chat.remote.join leave", err)
 	}
-
-	return &protos.RPCEmpty{}, nil
 }

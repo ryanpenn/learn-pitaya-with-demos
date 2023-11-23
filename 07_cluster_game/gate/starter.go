@@ -19,14 +19,14 @@ func Start(c *config.GateConfig, serializer serialize.Serializer, conf *pConfig.
 	builder.Serializer = serializer
 	builder.Groups = groups.NewMemoryGroupService(*pConfig.NewDefaultMemoryGroupConfig())
 
-	// 创建监听器 （TODO：可以不用了）
-	//l := newGameListener()
-	//builder.ServiceDiscovery.AddListener(l)
+	l := &Listener{}
+	builder.ServiceDiscovery.AddListener(l)
 
 	// 构建
 	app := builder.Build()
 	defer app.Shutdown()
 
+	l.BindApp(app)
 	// 添加game服路由规则
 	addGameRouter(app, "game")
 	// 注册SessionHandler

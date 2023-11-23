@@ -53,7 +53,7 @@ func RunBot(num int, cfg *GameConfig) {
 				bot.Chat(num)
 				sid, _ := strconv.Atoi(list[0].ServerID)
 				bot.WorldChat(sid)
-				//bot.CrossChat()
+				bot.CrossChat()
 			}
 
 			fmt.Println(name, "end")
