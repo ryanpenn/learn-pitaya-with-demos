@@ -42,7 +42,7 @@ func RunBot(num int, cfg *GameConfig) {
 				}()
 
 				// game
-				roleID := int64(0)
+				roleID := int64(index + 1)
 				if list[0] != nil && list[0].Role != nil {
 					roleID = list[0].Role.RoleID
 				}
@@ -53,7 +53,7 @@ func RunBot(num int, cfg *GameConfig) {
 				bot.Chat(num)
 				sid, _ := strconv.Atoi(list[0].ServerID)
 				bot.WorldChat(sid)
-				bot.CrossChat()
+				//bot.CrossChat()
 			}
 
 			fmt.Println(name, "end")

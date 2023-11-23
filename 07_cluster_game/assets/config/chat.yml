@@ -1,3 +1,6 @@
 serverConfig:
   serverType: "chat"
   isFrontend: false
+dbName: "chat"
+dbAddr: "mongodb://root:12345@127.0.0.1:27017"
+dbTimeout: 90

@@ -19,3 +19,9 @@ type PlayerUpdateInfo struct {
 	Player *PlayerInfoResp
 	Info   string
 }
+
+// ChatJoin 加入群组
+type ChatJoin struct {
+	UID     int64
+	GroupID int64
+}

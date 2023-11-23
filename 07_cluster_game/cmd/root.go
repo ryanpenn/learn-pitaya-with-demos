@@ -23,11 +23,7 @@ var startCmd = &cobra.Command{
 	Short: "start",
 	Long:  `start`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("choose a serve to start")
-	},
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		//internal.InitConfig()
-		//internal.InitLogger()
+		fmt.Println("choose a server to start")
 	},
 }
 
@@ -41,8 +37,7 @@ func init() {
 }
 
 func Execute() {
-	viper.BindPFlag("gameconfig.area", startCmd.PersistentFlags().Lookup("area"))
-	viper.BindPFlag("gateconfig.port", startCmd.PersistentFlags().Lookup("port"))
+	//设置pitaya并发数
 	viper.BindPFlag("pitaya.concurrency.handler.dispatch", startCmd.PersistentFlags().Lookup("core"))
 
 	if err := rootCmd.Execute(); err != nil {
