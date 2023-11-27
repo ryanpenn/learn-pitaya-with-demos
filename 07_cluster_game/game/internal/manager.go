@@ -25,7 +25,7 @@ func NewGameManager(app pitaya.Pitaya, c *config.GameConfig) *GameManager {
 }
 
 func (m *GameManager) AfterInit() {
-	// start http server
+	// load data
 }
 
 func (m *GameManager) BeforeShutdown() {
